@@ -11,14 +11,14 @@ router.post("/signup", (req, res) => {
   const { name, email, password, pic } = req.body;
   if (!email || !password || !name) {
     res
-      .status(422)
-      .json({ error: "Hamma inputlar to'ldirilgan bo'lishi kerak" });
+        .status(422)
+        .json({ error: "All inputs must be filled" });
   }
   User.findOne({ email: email }).then((savedUser) => {
     if (savedUser) {
       return res
-        .status(422)
-        .json({ error: "Bunday email manzil ro'yhatdan o'tgan" });
+          .status(422)
+          .json({ error: "This email already registered" });
     }
 
     bcrypt.hash(password, 10).then((hashedPass) => {
@@ -29,13 +29,13 @@ router.post("/signup", (req, res) => {
         pic,
       });
       user
-        .save()
-        .then((user) => {
-          res.json({ msg: "Siz muvaffaqiyatli ro'yhatdan o'tdingiz" });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          .save()
+          .then((user) => {
+            res.json({ msg: "You have successfully created account" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     });
   });
 });
@@ -44,31 +44,31 @@ router.post("/signin", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     res
-      .status(422)
-      .json({ error: "Iltimos parol va email manzilingizni kiriting" });
+        .status(422)
+        .json({ error: "Please enter your password and email address" });
   }
   User.findOne({ email: email }).then((savedUser) => {
     if (!savedUser) {
-      return res.status(422).json({ error: "parol va email manzilingiz xato" });
+      return res.status(422).json({ error: "Your password and email address are incorrect" });
     }
     bcrypt
-      .compare(password, savedUser.password)
-      .then((doMatch) => {
-        if (doMatch) {
-          // res.json({msg: "successfully signed in"})
-          const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-          const { _id, name, email, followers, following, pic } = savedUser;
-          res.json({
-            token: token,
-            user: { _id, name, email, followers, following, pic },
-          });
-        } else {
-          return res.status(422).json({ error: "Parolingiz xato" });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .compare(password, savedUser.password)
+        .then((doMatch) => {
+          if (doMatch) {
+            // res.json({msg: "successfully signed in"})
+            const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
+            const { _id, name, email, followers, following, pic } = savedUser;
+            res.json({
+              token: token,
+              user: { _id, name, email, followers, following, pic },
+            });
+          } else {
+            return res.status(422).json({ error: "Your password incorrect" });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   });
 });
 
