@@ -15,6 +15,3 @@ This Social Media project will have following features -
  -----User an delete his or her post
  
 Demo: https://simpleinstagram.herokuapp.com/
-
-
-
