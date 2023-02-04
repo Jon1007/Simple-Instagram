@@ -14,4 +14,4 @@ This Social Media project will have following features -
  -----User can view his profile and others profile
  -----User an delete his or her post
  
-Demo: https://simpleinstagram.herokuapp.com/
+Demo: https://simpleinstagram.herokuapp.com
